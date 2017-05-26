@@ -213,6 +213,7 @@
  **/
  
  #uploadDownloadHolder {
+  display: block;
   background: #40A4DF;
   border-radius:8px;
   left: 50%;
@@ -220,6 +221,7 @@
   padding: 0px;
   position: fixed;
   width: 250px;
+
  }
  
  #downloadTable {

@@ -840,7 +840,8 @@ function onDocumentKeyDown(event) {
             //case esc - view escape menu
         case 27:
             highlightTile(-1);
-            toggleEscapeFrame();
+            alert("hi");
+            toggleChangeLandType();
             break;
         case 85:
             if(!inResults && !inDispLevels && !overlayedToggled)
@@ -879,12 +880,17 @@ function onDocumentKeyUp(event) {
         case 49:
             oneIsDown = false;
             break;
+        case 27:
+            toggleDownloadFrame();
+            break;
+            
     } //end switch
 } //end onDocumentKeyUp
 
 //toggleEscapeFrame displays and hides the div that allows the user to go to the main menu, options, or directory
 function toggleEscapeFrame() {
 
+    
     if (document.getElementById('confirmEscape').style.height == "300px") {
         confirmEscape()
     };
@@ -915,6 +921,17 @@ function toggleEscapeFrame() {
 } //end toggleEscapeFrame
 
 //paintChange changes the highlighted color of the selected painter and updates painter
+function toggleDownloadFrame (){
+
+    if (document.getElementById('uploadDownloadHolder').style.display = "block" ){
+        
+        document.getElementById('uploadDownloadHolder').style.display = "none";
+        document.getElementById('downloadTable').style.visibility = "invisible";
+ 
+    }
+}
+
+
 function changeSelectedPaintTo(newPaintValue) {
     //paint color has been switched
     paintSwitch = true;

@@ -69,16 +69,21 @@ function initializeCamera() {
     camera.position.y = 320;
     camera.position.z = 0;
     camera.rotation.x = -1.570795331865673;
-
+  
+    
     //set camera field of view for zoom functions
     fov = camera.fov;
 
     //set up controls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.minDistance = 120;
+    controls.maxDistance = 500;
+    
 
     //add resize listener, so we can keep the aspect ratio correct
     window.addEventListener('resize', onResize, false);
 } //end initializeCamera
+
 
 //initializeLighting adds the lighting with specifications to the scene
 function initializeLighting() {
