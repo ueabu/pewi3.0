@@ -141,14 +141,6 @@ Cleaned and Prepared - July 2016
     window.scrollTo(0, 0);
   }//end function saveCurrentOptionsState
 
-function optEsc(e){
-    if (e.keyCode == 27){
-        saveCurrentOptionsState();
-    }
-}
-
-document.addEventListener('keyup',optEsc); 
-//document.addEventListener('keyup',optEsc);
   //this function gets the current option parameters which are stored as text in 
   // the parameter div
   // it then updates the options page accordingly, since the iframe has no memory of

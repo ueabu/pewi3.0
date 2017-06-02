@@ -2347,9 +2347,23 @@ function startOptions() {
         document.getElementById('options').style.visibility = "visible";
         //setup options page with the current parameter selection
         document.getElementById('options').contentWindow.getCurrentOptionsState();
-    } //end if
-    
+    } //end if 
+    //Making sure escape options frame is not visible with escape frame
+    if(document.getElementById('options').style.visibility == "visible"){
+        document.getElementById('modalEscapeFrame').style.display ="none";
+    }
+     //Event listner for escape
+        document.addEventListener('keyup',optEsc); 
 } //end startOptions
+
+//Function that closes options when escape is pressed.
+function optEsc(e){
+    if (e.keyCode == 27){
+       document.getElementById('options').contentWindow.saveCurrentOptionsState(); 
+        document.getElementById("escapeMenu").style.visibility = "invisible"; 
+        document.removeEventListener('keyup',optEsc);
+    }
+}
 
 //endMultiAssignMode displays the multiPlayer element
 function endMultiplayerAssignMode() {
