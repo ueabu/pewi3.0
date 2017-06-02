@@ -1005,6 +1005,9 @@ function resultsStart() {
         calculateResults();
         displayResults();
         animateResults();
+        
+        //Event Listener for closing reslts tab
+        document.addEventListener('keyup', resultsEsc);
     } //end if
 } //end resultsStart
 
@@ -1013,6 +1016,9 @@ function resultsEnd() {
     inResults = false;
     //modal is no longer up
     modalUp = false;
+    
+    //Fucntion for removing event listener when resluts is closed
+    document.removeEventListener('keyup', resultsEsc);
 
     //reset functionality
     document.getElementById("resultsFrame").className = "resultsFrameRolled";
@@ -1943,7 +1949,11 @@ function showCredits() {
         document.getElementById('closeCredits').style.display = "block";
         document.getElementById('modalCreditsFrame').style.display = "block";
         modalUp = true;
+        
+        //Event Listner to close the credits page
+        document.addEventListener('keyup',aboutsEsc);
     }
+   
 } //end showCredits
 
 //closeCreditFrame closes the credits iframe
@@ -1952,6 +1962,9 @@ function closeCreditFrame() {
     document.getElementById('closeCredits').style.display = "none";
     document.getElementById('modalCreditsFrame').style.display = "none";
     modalUp = false;
+    
+    //Event listner that closes escape key
+    document.removeEventListener('keyup', aboutsEsc);
 } //end closeCreditFrame
 
 //showUploadDownload opens the credits iframe
@@ -1962,10 +1975,12 @@ function showUploadDownload() {
         document.getElementById('modalUploadFrame').style.display = "block";
         modalUp = true;
     }
-
+     document.addEventListener('keyup', downuploadEsc);
+    
     if (mapIsHighlighted) {
         displayLevels();
     }
+   
 } //end showUploadDownload
 
 //closeUploadDownloadFrame closes the credits iframe
@@ -1975,6 +1990,7 @@ function closeUploadDownloadFrame() {
     document.getElementById('modalUploadFrame').style.display = "none";
 
     modalUp = false;
+    document.removeEventListener('keyup', downuploadEsc);
 } //end closeUploadDownloadFrame
 
 //toggleIndex displays and hides the codex
@@ -1988,6 +2004,8 @@ function toggleIndex() {
         modalUp = true;
         document.getElementById('modalCodexFrame').style.display = "block";
         document.getElementById('index').style.display = "block";
+        document.addEventListener('keyup', indexEsc);
+
     }
     else if (document.getElementById('index').style.display == "block" && modalUp) {
 
@@ -2004,9 +2022,38 @@ function toggleIndex() {
         document.getElementById('index').contentWindow.document.getElementById('title').innerHTML = "";
         
         document.getElementById('index').contentWindow.resetHighlighting() ;
-        
-       }
+        document.removeEventListener('keyup', indexEsc);
+
+        }
+
 } //end toggleIndex
+
+//Function that closes results dialog if the escape key is pressed
+function resultsEsc(e){
+    if (e.keyCode == 27){
+        resultsEnd();
+    }
+}
+
+//Function that closes the about dialog when escape key is pressed
+function aboutsEsc(e){
+    if (e.keyCode == 27){
+        closeCreditFrame();
+    }
+}
+
+//Function that closes the Download dialog when the escape key is pressed
+function downuploadEsc(e){
+    if (e.keyCode == 27){
+       closeUploadDownloadFrame();
+    }
+}
+//Function that closes the download index dialog when escape key is pressed
+function indexEsc(e){
+    if (e.keyCode == 27){
+        toggleIndex();
+    }
+}
 
 //printLandUseType returns a display-worthy string of land type from numeric key
 function printLandUseType(type) {
@@ -2293,6 +2340,7 @@ function resetOptions() {
 
 //startOptions displays the options page 
 function startOptions() {
+   
     //if nothing else has precedence
     if (!modalUp) {
         modalUp = true;
@@ -2300,6 +2348,7 @@ function startOptions() {
         //setup options page with the current parameter selection
         document.getElementById('options').contentWindow.getCurrentOptionsState();
     } //end if
+    
 } //end startOptions
 
 //endMultiAssignMode displays the multiPlayer element

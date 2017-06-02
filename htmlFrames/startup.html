@@ -87,7 +87,7 @@ Cleaned and Prepared - July 2016
 
    <div id="startupButton1" onmouseover="highlightButtonAndShowInfo(1,1);"  onmouseout="highlightButtonAndShowInfo(1,0);" class="mainButton" onclick="startSandbox();">Sandbox</div>
    <div id="startupButton2" onmouseover="highlightButtonAndShowInfo(2,1);" onmouseout="highlightButtonAndShowInfo(2,0);" class="mainButton" onclick="startPlay();">Play</div>
-   <div id="startupButton3" onmouseover="highlightButtonAndShowInfo(3,1);" onmouseout="highlightButtonAndShowInfo(3,0);" class="mainButton" onclick="startUtilities();">Utilities</div>
+   <div id="startupButton3" onmouseover="highlightButtonAndShowInfo(3,1);" onmouseout="highlightButtonAndShowInfo(3,0);" class="mainButton" onclick=" startUtilities(); ">Utilities</div>
 
    <div id="startupInformationText"></div>
 
@@ -194,6 +194,7 @@ function startSandbox() {
 
 //startUtilities hides the startup page elements and displays utilities
 function startUtilities() {
+  document.addEventListener('keyup',backUp );   
  //Update Buttons appropriately
  document.getElementById('startupButton1').style.display = "none";
  document.getElementById('startupButton2').style.display = "none";
@@ -207,17 +208,15 @@ function startUtilities() {
  document.getElementById('startupContentsHolder').style.height = "100%";
  document.getElementById('startupContentsHolder').style.backgroundColor = "rgba(0,0,0,0)";
  //clear informational text
- document.getElementById('startupInformationText').innerHTML = "";
+document.getElementById('startupInformationText').innerHTML = "";
  //change random tolerance ("U" for utilities)
- randomAllowed("U");
-
+ randomAllowed("U");   
  //Display utilities frame over the page, then with
  // the background elements hidden, rearrange them in preparation for the user
  // clicking back
  setTimeout(function() {
 
   hideBackgroundStartupElements();
-
   setTimeout(function() {
    document.getElementById('startupDialogueOverlay').src = "utilities.html";
    document.getElementById('startupDialogueOverlay').style.visibility = "visible";
@@ -226,8 +225,16 @@ function startUtilities() {
   setTimeout(function() { resetElements(); }, 500);
 
  }, 400);
-
 } //end startUtilities
+
+    function backUp(e){
+    if (e.keyCode == 27){
+     parent.reset();
+   }
+}
+
+   
+
 
 //startPlay hides the startup page elements and displays the level selector
 function startPlay() {

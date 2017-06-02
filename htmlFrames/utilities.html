@@ -42,7 +42,7 @@ Cleaned and Prepared - August 2016
 </head>    
 <body>
 
-    <img onclick="parent.reset()" id="backButton" src="./imgs/back.png" alt="Go Back <--">
+    <img onclick="parent.reset();" id="backButton" src="./imgs/back.png" alt="Go Back <--">
 
     <div id="utilitiesContentsHolder">
         
@@ -69,7 +69,7 @@ Cleaned and Prepared - August 2016
         
     </div>
 <script>
-
+document.addEventListener('keyup',backUp ); 
 var numberOfTimesAggregated = 0; //used to keep track for info bar 
 bindAggregateFunctionToFileUpload();
 
@@ -79,6 +79,7 @@ function launchMultiplayerSetup() {
    window.top.loadLevel(-1);
 
 }//end launchMultiplayerSetup
+
 
 //attach the file upload event to our functions for aggregating
 function bindAggregateFunctionToFileUpload() {
@@ -122,6 +123,15 @@ function updateInfo(time) {
         "Added 1. Now add remaining players." :
         "Added " + time + " files";
 }//end updateInfo
+  
+function backUp(e){
+    if (e.keyCode == 27){
+     parent.reset();
+   }
+}
+document.addEventListener('keyup',backUp);
+  
+
 </script>    
     
 </body> 
