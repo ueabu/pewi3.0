@@ -1,8 +1,10 @@
 //================
 //global vars
 
-//webGL stuff
+//GL stuff
 var camera, scene, raycaster, mouse, hoveredOver, bgCam;
+var player = { speed:5, turnSpeed:Math.PI*0.02 };
+var keyboard ={};
 var bgScene = null;
 var renderer = new THREE.WebGLRenderer();
 var controls;
@@ -60,14 +62,14 @@ function initializeCamera() {
   //camera
   SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
   ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 10000;
-  camera = new THREE.PerspectiveCamera(75, ASPECT, NEAR, FAR);
+  camera = new THREE.PerspectiveCamera(75, ASPECT, 0.1, FAR);
   scene.add(camera);
 
   //point camera in the correct direction
   // we'd hate to have the user looking at nothing
-  camera.position.x = 0;
-  camera.position.y = 320;
-  camera.position.z = 0;
+  camera.position.x= 0;
+  camera.position.y = 0;
+  camera.position.z = 130;  
   camera.rotation.x = -1.570795331865673;
 
   //set camera field of view for zoom functions
@@ -77,10 +79,61 @@ function initializeCamera() {
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.minDistance = 120;
   controls.maxDistance = 500;
+ 
 
   //add resize listener, so we can keep the aspect ratio correct
   window.addEventListener('resize', onResize, false);
+  window.addEventListener('keydown', keyDown);
+  window.addEventListener('keyup', keyUp);  
+    
+    animate();
+  //document.addEventListener('keydown', keyboard,false);
 } //end initializeCamera
+
+function animate(){
+	requestAnimationFrame(animate);
+	
+	// Keyboard movement inputs
+   
+	if(keyboard[87]){ // W key
+		camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
+		camera.position.z -= Math.cos(camera.rotation.y) * player.speed;
+	}
+	if(keyboard[83]){ // S key
+		camera.position.x += Math.sin(camera.rotation.y) * player.speed;
+		camera.position.z += Math.cos(camera.rotation.y) * player.speed;
+	}
+	if(keyboard[65]){ // A key
+		// Redirect motion by 90 degrees
+		camera.position.x -= Math.sin(camera.rotation.y + Math.PI/2) * player.speed;
+		camera.position.z -= Math.cos(camera.rotation.y + Math.PI/2) * player.speed;
+	}
+	if(keyboard[68]){ // D key
+		camera.position.x -= Math.sin(camera.rotation.y - Math.PI/2) * player.speed;
+		camera.position.z -= Math.cos(camera.rotation.y - Math.PI/2) * player.speed;
+	}
+   
+    
+	// Keyboard turn inputs
+	if(keyboard[39]){ // left arrow key
+		camera.rotation.y -= player.turnSpeed;
+	}
+	if(keyboard[37]){ // right arrow key
+		camera.rotation.y += player.turnSpeed;
+	}
+	
+	//renderer.render(scene, camera);
+}
+
+function keyDown(event){
+	keyboard[event.keyCode] = true;
+}
+
+function keyUp(event){
+	keyboard[event.keyCode] = false;
+}
+
+
 
 //initializeLighting adds the lighting with specifications to the scene
 function initializeLighting() {
@@ -103,7 +156,7 @@ function initializeLighting() {
   spotLight.shadow.mapSize.height = 2048;
   spotLight.shadow.camera.near = 1;
   spotLight.shadow.camera.far = 500;
-} //end initializeCamera
+} //end initializelighting
 
 //renderBackground creates the static background always behind viewpoint
 //  this function used to select for the creation of a skybox
@@ -167,6 +220,7 @@ function initWorkspace(file) {
 
 //animationFrames is the key function involved in webGl
 // here we set up a loop that calls itsef throughout the duration of the activity
+
 function animationFrames() {
 
   //render animations
@@ -174,7 +228,7 @@ function animationFrames() {
 
     birdAnimation();
     zoomAnimation();
-
+      
     //rain animations (change y position of each raindrop)
     if (rain != null) {
       for (var i = 0; i < rain.geometry.vertices.length; i++) {
@@ -277,7 +331,7 @@ function setupStaticBackground() {
   var r = Math.floor(Math.random() * oldPewiBackgrounds.length);
 
   var bg = new THREE.Mesh(
-    new THREE.PlaneGeometry(2, 2, 0),
+    new THREE.CubeGeometry(2, 2, 0),
     new THREE.MeshBasicMaterial({
       map: oldPewiBackgrounds[r]
     })
@@ -293,7 +347,13 @@ function setupStaticBackground() {
 
   var ambiLight = new THREE.AmbientLight(0x404040, 6.0);
   bgScene.add(ambiLight);
-
+  
+  meshFloor = new THREE.Mesh(
+       new THREE.CubeGeometry(2, 2, 0),
+    new THREE.MeshBasicMaterial({
+      map: oldPewiBackgrounds[r]
+    })
+  );
 } //end setupStaticBackground
 
 //switchBoards removes and displays a new board in the THREE.js scene
