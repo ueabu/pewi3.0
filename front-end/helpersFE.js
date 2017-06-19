@@ -1003,11 +1003,11 @@ function toggleEscapeFrame() {
     modalUp = false;
   }
 
-  if (multiplayerAssigningModeOn) {
-    document.getElementById('optionsButton').className = "unclickableMainEscapeButton";
-  } else {
-    document.getElementById('optionsButton').className = "mainEscapeButton";
-  }
+  //if (multiplayerAssigningModeOn) {
+    //document.getElementById('optionsButton').className = "mainEscapeButton";
+ // } else {
+    //document.getElementById('optionsButton').className = "mainEscapeButton";
+  //}
 
 } //end toggleEscapeFrame
 
@@ -2414,7 +2414,7 @@ function writeFileToDownloadString(mapPlayerNumber) {
 
   var string = "";
 
-  string = string + "ID,Row,Column,Area,BaseLandUseType,CarbonMax,CarbonMin,Cattle,CornYield,DrainageClass,Erosion,FloodFrequency,Group,NitratesPPM,PIndex,Sediment,SoilType,SoybeanYield,StreamNetwork,Subwatershed,Timber,Topography,WatershedNitrogenContribution,StrategicWetland,riverStreams,LandTypeYear1,LandTypeYear2,LandTypeYear3,PrecipYear0,PrecipYear1,PrecipYear2,PrecipYear3" + "\n";
+  string = string + "ID,Row,Column,Area,BaseLandUseType,CarbonMax,CarbonMin,Cattle,CornYield,DrainageClass,Erosion,FloodFrequency,Group,NitratesPPM,PIndex,Sediment,SoilType,SoybeanYield,StreamNetwork,Subwatershed,Timber,Topography,WatershedNitrogenContribution,StrategicWetland,riverStreams,LandTypeYear1,LandTypeYear2,LandTypeYear3,PrecipYear0,PrecipYear1,PrecipYear2,PrecipYear3"+window.top.document.getElementById('parameters').innerHTML + "\n";
 
   for (var i = 0; i < boardData[currentBoard].map.length; i++) {
 
@@ -2567,7 +2567,7 @@ function uploadClicked(e) {
     reader.readAsText(files[0]);
     reader.onload = function(e) {
       setupBoardFromUpload(reader.result);
-
+        //window.top.document.getElementById('parameters').innerHTML = ;
       //clear initData
       initData = [];
     }
