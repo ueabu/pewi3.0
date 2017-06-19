@@ -48,12 +48,18 @@ function createThreeFramework() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   //add renderer (canvas element) to html page
-  document.body.appendChild(renderer.domElement);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+   
 
   //create the main THREE.js scene
   scene = new THREE.Scene();
+   var meshfloor = new THREE.Mesh(
+    new THREE.BoxGeometry(500,100,500),
+    new THREE.MeshBasicMaterial({color:0x0ffffff, wireframe:false}));
+    
+    meshfloor.rotation.y += Math.PI/2;
+                                                                                                   
+    scene.add(meshfloor);
+     
 } //end createThreeFramework()
 
 //initializeCamera adds the camera object with specifications to the scene
@@ -69,7 +75,7 @@ function initializeCamera() {
   // we'd hate to have the user looking at nothing
   camera.position.x= 0;
   camera.position.y = 0;
-  camera.position.z = 130;  
+  camera.position.z = 100;  
   camera.rotation.x = -1.570795331865673;
 
   //set camera field of view for zoom functions
@@ -95,6 +101,7 @@ function animate(){
 	
 	// Keyboard movement inputs
    
+    
 	if(keyboard[87]){ // W key
 		camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
 		camera.position.z -= Math.cos(camera.rotation.y) * player.speed;
@@ -340,10 +347,12 @@ function setupStaticBackground() {
   bg.material.depthTest = false;
   bg.material.depthWrite = false;
 
+  
   bgScene = new THREE.Scene();
   bgCam = new THREE.Camera();
   bgScene.add(bgCam);
   bgScene.add(bg);
+
 
   var ambiLight = new THREE.AmbientLight(0x404040, 6.0);
   bgScene.add(ambiLight);
@@ -354,7 +363,9 @@ function setupStaticBackground() {
       map: oldPewiBackgrounds[r]
     })
   );
-} //end setupStaticBackground
+//end setupStaticBackground
+}
+
 
 //switchBoards removes and displays a new board in the THREE.js scene
 function switchBoards(newBoard) {
@@ -603,7 +614,7 @@ function showMainMenu() {
     document.getElementById('startupSequence').style.display = "block";
 
     //reset sandbox/level to original settings
-    if (zoomedIn) switchToUnzoomedView(1, false);
+   if (zoomedIn) switchToUnzoomedView(1, false);
     previousHover = null;
     currentYear = 1;
     changeSelectedPaintTo(1);
