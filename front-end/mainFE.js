@@ -2,12 +2,12 @@
 //global vars
 
 //webGL stuff
-var camera, scene, raycaster, mouse, hoveredOver, bgCam, camera2, camera1;
+var camera, scene, raycaster, mouse, hoveredOver, bgCam, camera2, camera1, ToggleCam;
 var player = { speed:5, turnSpeed:Math.PI*0.02 };
 var keyboard ={};
 var bgScene = null;
 var renderer = new THREE.WebGLRenderer();
-var controls;
+var controls, con1, con2;
 var stats = new Stats();
 var SCREEN_WIDTH, ASPECT, NEAR, FAR;
 //application data
@@ -77,20 +77,44 @@ function initializeCamera() {
      //point camera in the correct direction
     // we'd hate to have the user looking at nothing
     camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z =100;
+    camera.position.y = 320;
+    camera.position.z = 0;
     camera.rotation.x = -1.570795331865673;
     
-  
+    //First Camera
+    SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 10000;
+    camera1 = new THREE.PerspectiveCamera(75, ASPECT, NEAR, FAR);
+    scene.add(camera1);
+     //Camera1 view
+    camera1.position.x = 0;
+    camera1.position.y = 320;
+    camera1.position.z = 0;
+    camera1.rotation.x = -1.570795331865673;
+
+    //Second Camera
+    SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+    ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 10000;
+    camera2 = new THREE.PerspectiveCamera(75, ASPECT, NEAR, FAR);
+    scene.add(camera2);
+    //Second camera view
+    camera2.position.x = -90;
+    camera2.position.y = 30;
+    camera2.position.z = 10;
+    camera2.rotation.y = 0;
+
     //set camera field of view for zoom functions
     fov = camera.fov;
 
-    
-
     //set up controls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new THREE.OrbitControls(camera1, renderer.domElement);
 
-    //add resize listener, so we can keep the aspect ratio correct
+    controls.minDistance = 120;
+    controls.maxDistance = 500;
+
+    
+    //add resize listener, so we can keep the aspect ratio correctqppqqp
     window.addEventListener('resize', onResize, false);
     //Event Listners for camera movements
     window.addEventListener('keydown', keyDown);
@@ -98,50 +122,63 @@ function initializeCamera() {
     animate();
     
 } //end initializeCamera
-
+function toggleCameraView(){
+    if (ToggleCam == 1){changeCam2();}
+    else{ChangeCam();}
+}
 function ChangeCam (){
-    camera = camera2;
-    renderer.render(scene, camera2);
+    //console.log("Ua");
+   camera = camera2;
+    ToggleCam = 1;
+    //renderer.render(scene, camera2);
 }
 function changeCam2(){
+    //console.log("day");
     camera = camera1;
+    ToggleCam = 2;
+    controls.value = 10;
+      controls.reset();
+      setTimeout(function() {
+        controls.value = 1;
+      }, 100);
 }
 
 
 //Camera movements Controls
 function animate(){
 	requestAnimationFrame(animate);
-	
-	// Keyboard movement inputs
-   
+//	
+//	// Keyboard movement inputs
+//   
     if(keyboard[87]){ // W key
-		camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
-		camera.position.z -= Math.cos(camera.rotation.y) * player.speed;
+		camera2.position.x -= Math.sin(camera2.rotation.y) * player.speed;
+		camera2.position.z -= Math.cos(camera2.rotation.y) * player.speed;
 	}
 	if(keyboard[83]){ // S key
-		camera.position.x += Math.sin(camera.rotation.y) * player.speed;
-		camera.position.z += Math.cos(camera.rotation.y) * player.speed;
+		camera2.position.x += Math.sin(camera2.rotation.y) * player.speed;
+		camera2.position.z += Math.cos(camera2.rotation.y) * player.speed;
 	}
 	if(keyboard[65]){ // A key
 		// Redirect motion by 90 degrees
-		camera.position.x -= Math.sin(camera.rotation.y + Math.PI/2) * player.speed;
-		camera.position.z -= Math.cos(camera.rotation.y + Math.PI/2) * player.speed;
+		camera2.position.x -= Math.sin(camera2.rotation.y + Math.PI/2) * player.speed;
+		camera2.position.z -= Math.cos(camera2.rotation.y + Math.PI/2) * player.speed;
 	}
 	if(keyboard[68]){ // D key
-		camera.position.x -= Math.sin(camera.rotation.y - Math.PI/2) * player.speed;
-		camera.position.z -= Math.cos(camera.rotation.y - Math.PI/2) * player.speed;
+		camera2.position.x -= Math.sin(camera.rotation.y - Math.PI/2) * player.speed;
+		camera2.position.z -= Math.cos(camera.rotation.y - Math.PI/2) * player.speed;
 	}
-   
-    if(keyboard[80]){ ChangeCam();}
-    if(keyboard[81]){ changeCam2();}
-    
-    
-	// Keyboard turn inputs
+//   
+    //if(keyboard[80]){ ChangeCam();}
+    if(keyboard[81]){toggleCameraView();}
+
+//    
+//    
+//	// Keyboard turn inputs
 	if(keyboard[39]){ // left arrow key
-		camera.rotation.y -= player.turnSpeed;
+		camera2.rotation.y -= player.turnSpeed;
 	}
 	if(keyboard[37]){ // right arrow key
-		camera.rotation.y += player.turnSpeed;
+		camera2.rotation.y += player.turnSpeed;
 	}
 	
 	renderer.render(scene, camera);
@@ -277,9 +314,8 @@ function animationFrames() {
 
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
-        //renderer.render(scene, camera2);
-//        renderer.render(scene, camera2);renderer.render(scene, camera1);
-//        renderer.render(scene, camera2);
+        //renderer.render(scene, camera1);
+
         
         stats.update();
 
