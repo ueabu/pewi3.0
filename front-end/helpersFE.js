@@ -912,11 +912,16 @@ function onDocumentKeyDown(event) {
       // it seeems that controls.js scope doesn't bring us all the way back
       // with just a controls value of 1
     //Reseting camera postion to specific views depending on which camera is on use now.
+    controls.value = 10;
+    controls.reset();
+    setTimeout(function() {
+    controls.value = 1;
+      }, 100);
     if(ToggleCam == 2){
-      controls.value = 10;
-      controls.reset();
+      controls1.value = 10;
+      controls1.reset();
       setTimeout(function() {
-        controls.value = 1;
+        controls1.value = 1;
       }, 100);
     }else{
         camera2.position.x = 70;
@@ -925,7 +930,6 @@ function onDocumentKeyDown(event) {
         camera2.rotation.y = 0;
     }
       break;
-
       //case r - randomize land types
     case 82:
       if (modalUp !== true && currentHighlightType < 4) {

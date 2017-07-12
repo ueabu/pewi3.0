@@ -8,7 +8,7 @@ var player = { speed:3, turnSpeed:Math.PI*0.02 };
 var keyboard ={};
 var bgScene = null;
 var renderer = new THREE.WebGLRenderer();
-var controls;
+var controls,controls1;
 var stats = new Stats();
 var SCREEN_WIDTH, ASPECT, NEAR, FAR;
 //application data
@@ -111,12 +111,14 @@ function initializeCamera() {
 
     //set up controls for camera one and camera1
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls = new THREE.OrbitControls(camera1, renderer.domElement);
+    controls1 = new THREE.OrbitControls(camera1, renderer.domElement);
 
-    //Zoom in and zoom out restrictions for camera one
+    //Zoom in and zoom out restrictions for camera one and camera1
     controls.minDistance = 120;
     controls.maxDistance = 500;
-
+    controls1.minDistance = 120;
+    controls1.maxDistance = 500;
+    
     //add resize listener, so we can keep the aspect ratio correct.
     window.addEventListener('resize', onResize, false);
     
@@ -126,6 +128,7 @@ function initializeCamera() {
     
     //Event listners for changing camera views
     document.addEventListener('keyup', CamView);
+    //document.addEventListener('keyup', ResCam1);
     animate(); 
 } //end initializeCamera
 
@@ -146,7 +149,6 @@ function RestorePosition(){
     camera2.position.z = cam2z;
 }
 
-
 //Function to change camera views.This function is called when the button Q is pressed.
 function toggleCameraView(){
     //Checking the flag variable to know which camera is functional.
@@ -160,6 +162,7 @@ function toggleCameraView(){
 function ChangeCam (){
    //Switching to second camera view
    camera = camera2;
+  //controls = new THREE.OrbitControls(camera, renderer.domElement);
    //Changing flag variable
     ToggleCam = 1;
     //Reseting camera twos position
@@ -178,10 +181,10 @@ function changeCam2(){
     //Flag variable for changing camera views
     ToggleCam = 2;
     //Reseting camera to original position after switching
-    controls.value = 10;
-    controls.reset();
+    controls1.value = 10;
+    controls1.reset();
     setTimeout(function() {
-    controls.value = 1;
+    controls1.value = 1;
       }, 100);
 }
 
@@ -206,7 +209,7 @@ function animate(){
         else
             camera2.position.z -= Math.cos(camera2.rotation.y) * player.speed;
 		camera2.position.x -= Math.sin(camera2.rotation.y) * player.speed;
-        console.log(camera2.position);
+        //console.log(camera2.position);
     }
     
 	if(keyboard[83]){ // S key Back Words movements
@@ -225,7 +228,7 @@ function animate(){
         else
             camera2.position.z += Math.cos(camera2.rotation.y) * player.speed;
 		camera2.position.x += Math.sin(camera2.rotation.y) * player.speed;
-        console.log(camera2.position);
+        //console.log(camera2.position);
 	}
 	
     if(keyboard[65]){ // A key Left Side Movement
@@ -244,7 +247,7 @@ function animate(){
         else
             camera2.position.z -= Math.cos(camera2.rotation.y + Math.PI/2) * player.speed;
 		camera2.position.x -= Math.sin(camera2.rotation.y + Math.PI/2) * player.speed;
-        console.log(camera2.position);
+        //console.log(camera2.position);
 	}
 	
     if(keyboard[68]){ // D key Right side Movements
@@ -263,7 +266,7 @@ function animate(){
         else
 		  camera2.position.z -= Math.cos(camera.rotation.y - Math.PI/2) * player.speed;
 		camera2.position.x -= Math.sin(camera.rotation.y - Math.PI/2) * player.speed;
-         console.log(camera2.position);
+         //console.log(camera2.position);
 	}
    
     // Keyboard turn inputs
@@ -295,7 +298,8 @@ function animate(){
          camera2.position.y -= 1;
         camera2.position.z -= Math.cos(camera2.rotation.y) * player.speed;
 		camera2.position.x -= Math.sin(camera2.rotation.y) * player.speed;
-        console.log(camera2.position.y +" "+ camera.position.z);}
+        //console.log(camera2.position.y +" "+ camera.position.z);
+        }
         }
 }
     
@@ -307,13 +311,14 @@ function animate(){
         if(camera2.position.y >= 60){ 
             camera2.position.y = 60;
              console.log("hi");
-            console.log(camera2.position.y +" "+ camera.position.z);
+            //console.log(camera2.position.y +" "+ camera.position.z);
         }
         else {
         camera2.position.y += 1;
         camera2.position.z += Math.cos(camera2.rotation.y) * player.speed;
 		camera2.position.x += Math.sin(camera2.rotation.y) * player.speed;
-        console.log(camera2.position.y +" "+ camera.position.z);}
+        //console.log(camera2.position.y +" "+ camera.position.z);
+        }
     }
 	renderer.render(scene, camera);   
 }
@@ -446,7 +451,6 @@ function animationFrames() {
 
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-//    renderer.render(scene, camera1);
     stats.update();
 
   }); //end request
