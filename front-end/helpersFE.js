@@ -6,6 +6,7 @@
           painter, Totals, river,
           Results, initData, hoveredOver, currentPlayer*/
 
+
 var currentRow = -1;
 var leftToolConsoleWasOpen;
 var rightPopupWasOpen;
